@@ -253,6 +253,11 @@ body {
   transition: var(--transition);
 }
 .band-color:hover { border-color: var(--accent); transform: scale(1.1); }
+.band-color.band-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: scale(1.15);
+}
 .band-select {
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -284,6 +289,11 @@ body {
   transition: var(--transition);
 }
 .color-swatch:hover { border-color: #fff; transform: scale(1.2); }
+.color-swatch.swatch-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  transform: scale(1.15);
+}
 
 /* ===== Ohm's Law Triangle ===== */
 .ohms-triangle {
