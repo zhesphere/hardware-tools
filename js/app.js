@@ -2,10 +2,59 @@
  * 硬件工程师工具箱 - 主应用
  * 管理工具切换和全局状态
  */
+
+/* ===== Theme Management ===== */
+const Theme = {
+  KEY: 'hw-tools-theme',
+
+  init() {
+    const saved = localStorage.getItem(this.KEY);
+    if (saved) {
+      this.apply(saved);
+    } else {
+      // Follow system preference on first visit
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.apply(prefersDark ? 'dark' : 'light');
+    }
+    this.bindToggle();
+
+    // Listen for system preference changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem(this.KEY)) {
+        this.apply(e.matches ? 'dark' : 'light');
+      }
+    });
+  },
+
+  apply(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      btn.title = theme === 'dark' ? '切换到浅色主题' : '切换到深色主题';
+    }
+  },
+
+  toggle() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(this.KEY, next);
+    this.apply(next);
+  },
+
+  bindToggle() {
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', () => this.toggle());
+    }
+  }
+};
+
 const App = {
   currentTool: 'unit-converter',
 
   init() {
+    Theme.init();
     this.bindNavigation();
     this.loadTool(this.currentTool);
   },

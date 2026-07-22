@@ -2,6 +2,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* Dark theme (default) */
   --bg-primary: #0f1117;
   --bg-secondary: #1a1d27;
   --bg-card: #212433;
@@ -18,9 +19,32 @@
   --red: #f87171;
   --purple: #a78bfa;
   --yellow: #fbbf24;
+  --resistor-body: #e8d5b7;
+  --resistor-lead: #c0c0c0;
   --radius: 10px;
   --radius-sm: 6px;
   --transition: 0.2s ease;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f4f5f7;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #eeeff2;
+  --border: #d4d6dc;
+  --text-primary: #1a1b2e;
+  --text-secondary: #5a5d6e;
+  --text-muted: #9498a8;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-glow: rgba(37, 99, 235, 0.12);
+  --green: #059669;
+  --orange: #ea580c;
+  --red: #dc2626;
+  --purple: #7c3aed;
+  --yellow: #d97706;
+  --resistor-body: #e8d5b7;
+  --resistor-lead: #c0c0c0;
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -90,7 +114,14 @@ body {
   border-left-color: var(--accent);
   font-weight: 600;
 }
-.sidebar-footer { padding: 12px 20px; border-top: 1px solid var(--border); }
+.sidebar-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 .github-link {
   color: var(--text-muted);
   text-decoration: none;
@@ -98,6 +129,23 @@ body {
   transition: var(--transition);
 }
 .github-link:hover { color: var(--text-primary); }
+
+/* Theme toggle */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: var(--transition);
+}
+.theme-toggle:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
 
 /* ===== Main Content ===== */
 .main-content {
@@ -425,7 +473,7 @@ body {
 .resistor-body {
   width: 200px;
   height: 48px;
-  background: #e8d5b7;
+  background: var(--resistor-body);
   border-radius: 6px;
   position: relative;
   display: flex;
@@ -436,7 +484,7 @@ body {
 .resistor-lead {
   width: 40px;
   height: 3px;
-  background: #c0c0c0;
+  background: var(--resistor-lead);
 }
 .band {
   width: 12px;
@@ -452,4 +500,139 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ===== Voltage Divider ===== */
+.vd-diagram-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.vd-circuit {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+.vd-wire {
+  stroke: var(--text-secondary);
+}
+.vd-resistor {
+  stroke: var(--text-secondary);
+}
+.vd-label {
+  fill: var(--text-muted);
+}
+.vd-param {
+  fill: var(--text-primary);
+}
+.vd-accent-text {
+  fill: var(--accent);
+}
+.vd-junction {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.vd-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.vd-input-group { }
+.vd-unit-static {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.vd-unit-select {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.vd-results {
+  margin-bottom: 12px;
+}
+
+.vd-result-primary {
+  background: var(--accent-glow);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.vd-vout-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.vd-vout-value {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.vd-vout-unit {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.vd-vout-eq {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  word-break: break-all;
+}
+
+.vd-formula-highlight {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Ratio bar */
+.vd-ratio-bar-wrap {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+.vd-ratio-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.vd-ratio-labels-bottom {
+  margin-bottom: 0;
+  margin-top: 6px;
+}
+.vd-ratio-bar {
+  height: 10px;
+  background: var(--bg-primary);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.vd-ratio-r2 {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 5px;
+  transition: width 0.3s ease;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .vd-form {
+    grid-template-columns: 1fr;
+  }
+  .vd-vout-value {
+    font-size: 1.5rem;
+  }
 }
