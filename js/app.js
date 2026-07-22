@@ -3,7 +3,7 @@
  * 管理工具切换和全局状态
  */
 const App = {
-  currentTool: 'capacitor',
+  currentTool: 'unit-converter',
 
   init() {
     this.bindNavigation();

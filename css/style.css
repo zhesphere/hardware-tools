@@ -331,6 +331,35 @@ body {
   text-align: center;
 }
 
+/* ===== Quantity Tabs ===== */
+.quantity-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quantity-tab {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  white-space: nowrap;
+}
+.quantity-tab:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+.quantity-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
 /* ===== Footer ===== */
 .footer {
   grid-area: footer;
