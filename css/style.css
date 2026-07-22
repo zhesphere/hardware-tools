@@ -343,40 +343,91 @@ body {
   transform: scale(1.15);
 }
 
-/* ===== Ohm's Law Triangle ===== */
-.ohms-triangle {
+/* ===== Ohm's Law ===== */
+.ohms-diagram-wrap {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
-.triangle-grid {
+.ohms-circuit {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+.ohms-wire {
+  stroke: var(--text-secondary);
+}
+.ohms-resistor {
+  stroke: var(--text-secondary);
+}
+.ohms-accent-wire {
+  stroke: var(--accent);
+}
+.ohms-accent-fill {
+  fill: var(--accent);
+}
+.ohms-accent-text {
+  fill: var(--accent);
+}
+.ohms-label {
+  fill: var(--text-primary);
+}
+.ohms-dash {
+  stroke: var(--text-muted);
+  fill: var(--text-muted);
+}
+
+.ohms-form {
   display: grid;
-  grid-template-columns: repeat(3, 90px);
-  grid-template-rows: auto auto;
-  gap: 4px;
-  text-align: center;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 12px;
 }
-.tri-v {
-  grid-column: 1 / -1;
-  background: var(--accent);
-  color: #fff;
-  padding: 10px;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  font-weight: 700;
-  font-size: 1.2rem;
+.ohms-unit-select {
+  width: 75px;
+  flex-shrink: 0;
 }
-.tri-i, .tri-r {
+
+.ohms-result-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Formula reference cards */
+.ohms-formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+.ohms-formula-card {
   background: var(--bg-input);
   border: 1px solid var(--border);
-  padding: 10px;
-  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
 }
-.tri-i { border-radius: 0 0 0 var(--radius-sm); }
-.tri-r { border-radius: 0 0 var(--radius-sm) 0; }
-.tri-plus { background: transparent; color: var(--text-muted); }
+.ohms-formula-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.ohms-formula-card-eq {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
 
+@media (max-width: 768px) {
+  .ohms-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Formula Box ===== */
 .formula-box {
   background: var(--bg-input);
   border: 1px solid var(--border);
