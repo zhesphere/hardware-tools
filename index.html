@@ -6,6 +6,13 @@
   <title>硬件工程师工具箱</title>
   <link rel="icon" type="image/webp" href="favicon.webp">
   <link rel="apple-touch-icon" href="favicon.webp">
+  <script>
+    // ★ 必须在 CSS 之前执行，防止主题闪烁
+    (function(){
+      var t = localStorage.getItem('hw-tools-theme');
+      document.documentElement.setAttribute('data-theme', t || 'dark');
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,11 +26,13 @@
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-title">工具列表</div>
     <ul class="tool-nav" id="toolNav">
-      <li><button class="tool-btn active" data-tool="unit-converter">🔄 单位换算器</button></li>
+      <li><button class="tool-btn" data-tool="unit-converter">🔄 单位换算器</button></li>
       <li><button class="tool-btn" data-tool="color-code">🌈 电阻色环码计算</button></li>
       <li><button class="tool-btn" data-tool="ohms-law">⚡ 欧姆定律计算</button></li>
       <li><button class="tool-btn" data-tool="led">💡 LED限流电阻</button></li>
       <li><button class="tool-btn" data-tool="voltage-divider">🔻 分压计算器</button></li>
+      <li><button class="tool-btn" data-tool="inductor-buck">🔌 Buck 电感选型</button></li>
+      <li><button class="tool-btn" data-tool="crystal-load">💎 晶体负载电容</button></li>
     </ul>
     <div class="sidebar-footer">
       <a href="https://github.com/zhesphere/hardware-tools" target="_blank" class="github-link">📦 GitHub</a>
@@ -47,5 +56,7 @@
   <script src="js/tools/ohms-law.js"></script>
   <script src="js/tools/led-resistor.js"></script>
   <script src="js/tools/voltage-divider.js"></script>
+  <script src="js/tools/inductor-buck.js"></script>
+  <script src="js/tools/crystal-load.js"></script>
 </body>
 </html>

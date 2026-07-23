@@ -51,12 +51,22 @@ const Theme = {
 };
 
 const App = {
+  TOOL_KEY: 'hw-tools-current-tool',
   currentTool: 'unit-converter',
 
   init() {
     Theme.init();
+    // Restore last-used tool from localStorage
+    const saved = localStorage.getItem(this.TOOL_KEY);
+    if (saved && ToolRegistry[saved]) {
+      this.currentTool = saved;
+    }
     this.bindNavigation();
     this.loadTool(this.currentTool);
+    // Sync nav active button to restored tool
+    document.querySelectorAll('.tool-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tool === this.currentTool);
+    });
   },
 
   bindNavigation() {
@@ -71,6 +81,7 @@ const App = {
 
   switchTool(tool) {
     this.currentTool = tool;
+    localStorage.setItem(this.TOOL_KEY, tool);
 
     // Update nav buttons
     document.querySelectorAll('.tool-btn').forEach(b => {

@@ -2,7 +2,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Dark theme (default) */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --transition: 0.2s ease;
+}
+
+[data-theme="dark"] {
   --bg-primary: #0f1117;
   --bg-secondary: #1a1d27;
   --bg-card: #212433;
@@ -21,9 +26,6 @@
   --yellow: #fbbf24;
   --resistor-body: #e8d5b7;
   --resistor-lead: #c0c0c0;
-  --radius: 10px;
-  --radius-sm: 6px;
-  --transition: 0.2s ease;
 }
 
 [data-theme="light"] {
@@ -685,5 +687,382 @@ body {
   }
   .vd-vout-value {
     font-size: 1.5rem;
+  }
+}
+
+/* ===== Buck Inductor Calculator ===== */
+.buck-diagram-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.buck-circuit {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+.buck-wire {
+  stroke: var(--text-secondary);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.buck-switch-fill {
+  fill: var(--text-secondary);
+}
+.buck-accent-fill {
+  fill: var(--accent);
+}
+.buck-label {
+  fill: var(--text-muted);
+}
+.buck-label-text {
+  fill: var(--text-primary);
+}
+.buck-junction {
+  fill: var(--accent);
+  stroke: none;
+}
+.buck-dash {
+  stroke: var(--text-muted);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 3;
+  fill: none;
+}
+.buck-dash-fill {
+  fill: var(--text-muted);
+}
+.buck-accent-text {
+  fill: var(--accent);
+}
+
+.buck-section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.buck-section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.buck-section--tip {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.buck-section-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.buck-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.buck-unit-static {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  width: 85px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.buck-unit-static--dim {
+  color: var(--text-muted);
+}
+
+.buck-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 4px;
+}
+.buck-unit-select {
+  width: 85px;
+  flex-shrink: 0;
+}
+
+.buck-results {
+  margin-bottom: 8px;
+}
+
+/* Result cards */
+.buck-result-card {
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.buck-result-card--primary {
+  background: var(--accent-glow);
+  border: 1px solid var(--accent);
+}
+.buck-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.buck-result-main { }
+.buck-result-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.buck-result-value {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.buck-result-unit {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.buck-result-meta {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  word-break: break-all;
+}
+.buck-result-meta strong {
+  color: var(--accent);
+}
+
+.buck-result-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.buck-badge--ok {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+.buck-badge--warn {
+  background: rgba(251, 146, 60, 0.15);
+  color: var(--orange);
+  border: 1px solid var(--orange);
+}
+
+/* Select & custom input */
+.buck-select-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.buck-select-group {
+  margin-bottom: 0;
+}
+.buck-l-select {
+  flex: 1;
+  min-width: 140px;
+}
+.buck-l-custom {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+/* Sub line in result items */
+.buck-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Warning */
+.buck-warn {
+  background: rgba(251, 146, 60, 0.12);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* Tip text */
+.buck-tip-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.buck-checklist {
+  list-style: none;
+  padding: 0;
+}
+.buck-checklist li {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  padding: 6px 0;
+  line-height: 1.5;
+}
+
+/* Formula separator */
+.buck-formula-sep {
+  color: var(--border);
+  margin: 0 6px;
+}
+
+@media (max-width: 768px) {
+  .buck-form {
+    grid-template-columns: 1fr;
+  }
+  .buck-select-wrap {
+    grid-template-columns: 1fr;
+  }
+  .buck-unit-static {
+    width: 65px;
+  }
+  .buck-unit-select {
+    width: 65px;
+  }
+  .buck-result-value {
+    font-size: 1.3rem;
+  }
+  .buck-diagram-wrap {
+    display: none;
+  }
+}
+
+/* ===== Crystal Load Capacitance ===== */
+.crystal-diagram-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.crystal-ref-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.crystal-mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.crystal-mode-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  text-align: center;
+}
+.crystal-mode-btn:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+.crystal-mode-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.crystal-panel {
+  display: none;
+}
+.crystal-panel.active {
+  display: block;
+}
+
+.crystal-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.crystal-unit-static {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  width: 85px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.crystal-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.crystal-result {
+  margin-bottom: 8px;
+}
+
+.crystal-result-card {
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.crystal-result-card--primary {
+  background: var(--accent-glow);
+  border: 1px solid var(--accent);
+}
+
+.crystal-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.crystal-section--tip {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+.crystal-section-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+@media (max-width: 768px) {
+  .crystal-form {
+    grid-template-columns: 1fr;
+  }
+  .crystal-unit-static {
+    width: 65px;
   }
 }
