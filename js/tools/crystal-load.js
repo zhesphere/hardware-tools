@@ -17,7 +17,7 @@ registerTool('crystal-load', () => {
 
         <!-- Circuit Diagram: reference image -->
         <div class="crystal-diagram-wrap">
-          <img src="负载电容计算.jpg" alt="晶体负载电容计算参考图" class="crystal-ref-img">
+          <img src="负载电容计算.png" alt="晶体负载电容计算参考图" class="crystal-ref-img">
         </div>
 
         <!-- Mode Switch -->
