@@ -303,6 +303,7 @@ body {
   border-radius: 50%;
   border: 2px solid var(--border);
   cursor: pointer;
+  padding: 0;
   transition: var(--transition);
 }
 .band-color:hover { border-color: var(--accent); transform: scale(1.1); }
@@ -310,6 +311,10 @@ body {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-glow);
   transform: scale(1.15);
+}
+.band-color:focus-visible, .color-swatch:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 .band-select {
   background: var(--bg-input);
@@ -339,6 +344,7 @@ body {
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
+  padding: 0;
   transition: var(--transition);
 }
 .color-swatch:hover { border-color: #fff; transform: scale(1.2); }

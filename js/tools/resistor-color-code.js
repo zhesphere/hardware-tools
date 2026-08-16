@@ -106,10 +106,11 @@ registerTool('color-code', () => {
       return `
         <div class="band-group">
           <div class="band-label">${labels[i]}</div>
-          <div class="band-color${isActive}"
+          <button type="button" class="band-color${isActive}"
                style="background-color:${c.color};"
                data-band="${i}"
-               title="${c.name}"></div>
+               aria-label="${labels[i]}：${c.name}，点击选择颜色"
+               title="${c.name}"></button>
           <div class="swatch-label">${c.name}</div>
         </div>`;
     }).join('');
@@ -142,10 +143,11 @@ registerTool('color-code', () => {
         <div class="color-options">
           ${available.map(c => {
             const isSel = c.id === sel[activeBand];
-            return `<div class="color-swatch${isSel ? ' swatch-selected' : ''}"
+            return `<button type="button" class="color-swatch${isSel ? ' swatch-selected' : ''}"
                  style="background-color:${c.color};"
                  title="${c.name}${c.tolerance ? ' ' + c.tolerance : ''}"
-                 data-id="${c.id}"></div>`;
+                 aria-label="${c.name}${c.tolerance ? '，误差 ' + c.tolerance : ''}"
+                 data-id="${c.id}"></button>`;
           }).join('')}
         </div>
       `;

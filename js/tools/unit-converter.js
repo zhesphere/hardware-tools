@@ -142,8 +142,13 @@ registerTool('unit-converter', () => {
 
   function convert() {
     const table = UNIT_TABLES[currentQuantity];
-    const value = parseFloat(valueInput.value) || 0;
+    const value = Number(valueInput.value);
     const fromScale = parseFloat(unitSelect.value);
+
+    if (valueInput.value.trim() === '' || !Number.isFinite(value)) {
+      resultDiv.innerHTML = '<div class="result-box" role="status"><span style="color:var(--text-muted)">请输入一个有限数值后进行换算。</span></div>';
+      return;
+    }
 
     // Convert to base unit
     const baseValue = value * fromScale;

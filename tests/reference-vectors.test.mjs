@@ -77,3 +77,9 @@ test('Buck UI uses correct display-unit multipliers', async () => {
   assert.match(buckSource, /option value="1"[^>]*>Hz/);
   assert.match(buckSource, /option value="1e3" selected>kHz/);
 });
+
+test('unit converter does not turn invalid input into a valid zero', async () => {
+  const converterSource = await readFile(new URL('../js/tools/unit-converter.js', import.meta.url), 'utf8');
+  assert.match(converterSource, /Number\.isFinite\(value\)/);
+  assert.doesNotMatch(converterSource, /parseFloat\(valueInput\.value\) \|\| 0/);
+});
