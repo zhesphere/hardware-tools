@@ -6,7 +6,7 @@ registerTool('voltage-divider', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>🔻 分压计算器</h2>
+        <h2>分压计算</h2>
         <p>计算电阻分压电路的输出电压 — 输入任意两个值自动计算</p>
       </div>
       <div class="tool-body">

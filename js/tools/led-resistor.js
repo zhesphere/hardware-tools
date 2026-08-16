@@ -42,7 +42,7 @@ registerTool('led', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>💡 LED 限流电阻计算</h2>
+        <h2>LED 限流电阻</h2>
         <p>根据电源电压和LED参数，计算所需的串联限流电阻</p>
       </div>
       <div class="tool-body">

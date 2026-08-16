@@ -145,6 +145,11 @@ const App = {
         status.textContent = '复制失败，请手动选择结果';
       }
     });
+
+    const guide = document.createElement('div');
+    guide.className = 'tool-guide';
+    guide.innerHTML = '<span><b>1</b>填写已知条件</span><span><b>2</b>核对假设与结果</span><span><b>3</b>复制计算记录</span>';
+    body.prepend(guide);
   }
 };
 

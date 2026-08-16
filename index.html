@@ -16,48 +16,48 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <h1 class="logo">🔧 硬件工程师工具箱</h1>
-      <p class="subtitle">电阻 · 电容 · 电路计算 — 一站式硬件小工具集合</p>
-    </div>
-  </header>
-
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-title">工具列表</div>
+  <div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html" aria-label="硬件工程师工具箱首页">
+      <span class="brand-mark" aria-hidden="true">⌁</span>
+      <span><strong>Hardware Tools</strong><small>电路计算工作台</small></span>
+    </a>
+    <div class="sidebar-title">计算工具</div>
     <ul class="tool-nav" id="toolNav">
-      <li><button class="tool-btn" data-tool="unit-converter">🔄 单位换算器</button></li>
-      <li><button class="tool-btn" data-tool="color-code">🌈 电阻色环码计算</button></li>
-      <li><button class="tool-btn" data-tool="ohms-law">⚡ 欧姆定律计算</button></li>
-      <li><button class="tool-btn" data-tool="led">💡 LED限流电阻</button></li>
-      <li><button class="tool-btn" data-tool="voltage-divider">🔻 分压计算器</button></li>
-      <li><button class="tool-btn" data-tool="inductor-buck">🔌 Buck 电感选型</button></li>
-      <li><button class="tool-btn" data-tool="crystal-load">💎 晶体负载电容</button></li>
+      <li><button class="tool-btn" data-tool="unit-converter">⇄ 单位换算</button></li>
+      <li><button class="tool-btn" data-tool="color-code">◉ 电阻色环</button></li>
+      <li><button class="tool-btn" data-tool="ohms-law">Ω 欧姆定律</button></li>
+      <li><button class="tool-btn" data-tool="led">◌ LED 限流</button></li>
+      <li><button class="tool-btn" data-tool="voltage-divider">⌁ 分压计算</button></li>
+      <li><button class="tool-btn" data-tool="inductor-buck">⎓ Buck 电感</button></li>
+      <li><button class="tool-btn" data-tool="crystal-load">◇ 晶体负载</button></li>
     </ul>
     <div class="sidebar-footer">
-      <a href="https://github.com/zhesphere/hardware-tools" target="_blank" class="github-link">📦 GitHub</a>
-      <button class="theme-toggle" id="themeToggle" title="切换深色/浅色主题">🌙</button>
+      <span><i></i>仅在本地计算</span>
+      <a href="https://github.com/zhesphere/hardware-tools" target="_blank" rel="noreferrer" class="github-link">查看源码</a>
     </div>
-  </nav>
+  </aside>
 
-  <main class="main-content" id="mainContent">
-    <!-- 工具内容由 JS 动态加载 -->
+  <main class="main">
+    <div class="main-shell">
+      <header class="family-bar">
+        <span class="family-name">Orbitvo Tools</span><span aria-hidden="true">/</span><span>硬件计算</span>
+        <button class="theme-toggle" id="themeToggle" title="切换深色/浅色主题" aria-label="切换深色或浅色主题">◐</button>
+      </header>
+      <div class="main-content" id="mainContent"></div>
+      <footer class="footer"><span>结果用于工程初算，请结合规格书与实测确认。</span><span>本地处理 · 无需登录</span></footer>
+    </div>
   </main>
+  </div>
 
-  <div class="overlay" id="overlay"></div>
-
-  <footer class="footer">
-    <p>硬件工程师工具箱 — 开源免费 · 持续更新中</p>
-  </footer>
-
-  <script src="js/core/calculations.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/tools/unit-converter.js"></script>
-  <script src="js/tools/resistor-color-code.js"></script>
-  <script src="js/tools/ohms-law.js"></script>
-  <script src="js/tools/led-resistor.js"></script>
-  <script src="js/tools/voltage-divider.js"></script>
-  <script src="js/tools/inductor-buck.js"></script>
-  <script src="js/tools/crystal-load.js"></script>
+  <script src="js/core/calculations.js?v=20260816"></script>
+  <script src="js/app.js?v=20260816"></script>
+  <script src="js/tools/unit-converter.js?v=20260816"></script>
+  <script src="js/tools/resistor-color-code.js?v=20260816"></script>
+  <script src="js/tools/ohms-law.js?v=20260816"></script>
+  <script src="js/tools/led-resistor.js?v=20260816"></script>
+  <script src="js/tools/voltage-divider.js?v=20260816"></script>
+  <script src="js/tools/inductor-buck.js?v=20260816"></script>
+  <script src="js/tools/crystal-load.js?v=20260816"></script>
 </body>
 </html>

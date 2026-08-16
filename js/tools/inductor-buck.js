@@ -6,7 +6,7 @@ registerTool('inductor-buck', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>🔌 Buck 电路功率电感计算与选型</h2>
+        <h2>Buck 电感选型</h2>
         <p>计算 Buck 降压电路中功率电感的关键参数，辅助电感选型</p>
       </div>
       <div class="tool-body">

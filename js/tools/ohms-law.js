@@ -7,7 +7,7 @@ registerTool('ohms-law', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>⚡ 欧姆定律计算器</h2>
+        <h2>欧姆定律</h2>
         <p>输入任意两个参数（电压 / 电流 / 电阻 / 功率），自动计算其余值</p>
       </div>
       <div class="tool-body">

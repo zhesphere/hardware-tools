@@ -5,7 +5,7 @@
 const UNIT_TABLES = {
   resistance: {
     name: '电阻',
-    icon: '🟢',
+    icon: 'Ω',
     baseUnit: 'Ω',
     units: [
       { unit: 'mΩ',  label: '毫欧 (mΩ)', scale: 1e-3 },
@@ -17,7 +17,7 @@ const UNIT_TABLES = {
   },
   capacitance: {
     name: '电容',
-    icon: '🔵',
+    icon: 'C',
     baseUnit: 'F',
     units: [
       { unit: 'pF', label: '皮法 (pF)', scale: 1e-12 },
@@ -29,7 +29,7 @@ const UNIT_TABLES = {
   },
   voltage: {
     name: '电压',
-    icon: '⚡',
+    icon: 'V',
     baseUnit: 'V',
     units: [
       { unit: 'µV', label: '微伏 (µV)', scale: 1e-6 },
@@ -41,7 +41,7 @@ const UNIT_TABLES = {
   },
   current: {
     name: '电流',
-    icon: '🔌',
+    icon: 'I',
     baseUnit: 'A',
     units: [
       { unit: 'µA', label: '微安 (µA)', scale: 1e-6 },
@@ -52,7 +52,7 @@ const UNIT_TABLES = {
   },
   power: {
     name: '功率',
-    icon: '🔥',
+    icon: 'P',
     baseUnit: 'W',
     units: [
       { unit: 'µW', label: '微瓦 (µW)', scale: 1e-6 },
@@ -64,7 +64,7 @@ const UNIT_TABLES = {
   },
   frequency: {
     name: '频率',
-    icon: '📡',
+    icon: 'f',
     baseUnit: 'Hz',
     units: [
       { unit: 'mHz', label: '毫赫 (mHz)', scale: 1e-3 },
@@ -76,7 +76,7 @@ const UNIT_TABLES = {
   },
   inductance: {
     name: '电感',
-    icon: '🧲',
+    icon: 'L',
     baseUnit: 'H',
     units: [
       { unit: 'µH', label: '微亨 (µH)', scale: 1e-6 },
@@ -105,7 +105,7 @@ registerTool('unit-converter', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>🔄 单位换算器</h2>
+        <h2>单位换算</h2>
         <p>选择物理量类型，输入数值即可看到所有单位的换算结果</p>
       </div>
       <div class="tool-body">
@@ -181,7 +181,7 @@ registerTool('unit-converter', () => {
       if (notations.length > 0) {
         resultDiv.innerHTML += `
           <div class="formula-box" style="margin-top:8px; color: var(--green);">
-            📌 常用表示：${notations.join(' = ')}
+            常用表示：${notations.join(' = ')}
           </div>
         `;
       }

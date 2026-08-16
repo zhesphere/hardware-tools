@@ -25,7 +25,7 @@ registerTool('color-code', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>🌈 电阻色环码计算</h2>
+        <h2>电阻色环</h2>
         <p>点击色环选择颜色计算电阻值，支持4色环、5色环电阻</p>
       </div>
       <div class="tool-body">

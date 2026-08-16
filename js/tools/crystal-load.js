@@ -10,7 +10,7 @@ registerTool('crystal-load', () => {
   return `
     <div class="tool-panel active">
       <div class="tool-header">
-        <h2>💎 晶体负载电容计算</h2>
+        <h2>晶体负载电容</h2>
         <p>计算晶振 Pierce 振荡器的外部负载电容 C1 / C2</p>
       </div>
       <div class="tool-body">
