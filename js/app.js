@@ -107,9 +107,44 @@ const App = {
       if (ToolInit[tool]) {
         ToolInit[tool]();
       }
+      this.attachResultCopy(main);
     } else {
       main.innerHTML = `<div class="tool-panel active"><p>工具开发中...</p></div>`;
     }
+  },
+
+  attachResultCopy(main) {
+    const panel = main.querySelector('.tool-panel');
+    const body = main.querySelector('.tool-body');
+    const title = main.querySelector('.tool-header h2')?.textContent || '硬件工程师工具箱';
+    if (!panel || !body) return;
+
+    const actions = document.createElement('div');
+    actions.className = 'result-actions';
+    actions.innerHTML = '<button type="button" class="btn btn-secondary result-copy-btn">复制当前计算</button><span class="result-copy-status" aria-live="polite"></span>';
+    panel.querySelector('.tool-header').after(actions);
+    const status = actions.querySelector('.result-copy-status');
+
+    actions.querySelector('.result-copy-btn').addEventListener('click', async () => {
+      const text = `${title}\n\n${body.innerText}\n\n说明：结果仅供工程初算，请结合器件规格书与实测确认。`;
+      try {
+        if (navigator.clipboard?.writeText && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const area = document.createElement('textarea');
+          area.value = text;
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          if (!document.execCommand('copy')) throw new Error('copy failed');
+          area.remove();
+        }
+        status.textContent = '已复制';
+      } catch (error) {
+        status.textContent = '复制失败，请手动选择结果';
+      }
+    });
   }
 };
 
