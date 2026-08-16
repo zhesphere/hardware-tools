@@ -175,11 +175,11 @@ function renderUnitGrid(results, highlightUnit) {
 }
 
 // Helper: format number for display
-function fmtNum(n) {
+function fmtNum(n, significantDigits = 4) {
   if (n === 0) return '0';
-  if (Math.abs(n) < 1e-12 || Math.abs(n) >= 1e12) return n.toExponential(4);
-  // Show up to 6 significant digits, trim trailing zeros
-  const s = parseFloat(n.toPrecision(6)).toString();
+  if (Math.abs(n) < 1e-12 || Math.abs(n) >= 1e12) return n.toExponential(significantDigits - 1);
+  // Display precision is deliberately limited: it is not a measurement uncertainty.
+  const s = parseFloat(n.toPrecision(significantDigits)).toString();
   return s;
 }
 

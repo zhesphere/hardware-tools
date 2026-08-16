@@ -83,3 +83,8 @@ test('unit converter does not turn invalid input into a valid zero', async () =>
   assert.match(converterSource, /Number\.isFinite\(value\)/);
   assert.doesNotMatch(converterSource, /parseFloat\(valueInput\.value\) \|\| 0/);
 });
+
+test('display formatting documents a four-significant-digit default', async () => {
+  const appSource = await readFile(new URL('../js/app.js', import.meta.url), 'utf8');
+  assert.match(appSource, /fmtNum\(n, significantDigits = 4\)/);
+});
