@@ -144,7 +144,7 @@ registerTool('crystal-load', () => {
     const cstray = parseFloat(cstrayInput.value);
 
     if (isNaN(cl) || isNaN(cstray) || cl <= 0 || cstray < 0) {
-      resultCaps.innerHTML = '';
+      resultCaps.innerHTML = '<div class="buck-warn">请填写正的 CL 与非负的 Cstray。</div>';
       return;
     }
 
@@ -159,11 +159,13 @@ registerTool('crystal-load', () => {
     const clCheck = (cEach * cEach) / (cEach + cEach) + cstray;  // verify
 
     // Common standard capacitor values for reference
-    const stdValues = [5, 6, 8, 10, 12, 15, 18, 20, 22, 27, 30, 33, 39, 47];
+    const stdValues = [3.3, 3.9, 4.7, 5.6, 6.8, 8.2, 10, 12, 15, 18, 22, 27, 33, 39, 47];
     let nearest = stdValues[0];
     for (const v of stdValues) {
       if (Math.abs(v - cEach) < Math.abs(nearest - cEach)) nearest = v;
     }
+    const standardCl = (nearest * nearest) / (nearest + nearest) + cstray;
+    const standardError = ((standardCl - cl) / cl) * 100;
 
     resultCaps.innerHTML = `
       <div class="crystal-result-card crystal-result-card--primary">
@@ -172,11 +174,11 @@ registerTool('crystal-load', () => {
             <div class="buck-result-label">C1 = C2（对称设计）</div>
             <div class="buck-result-value">${fmtNum(cEach)} <span class="buck-result-unit">pF</span></div>
           </div>
-          <div class="crystal-badge">≈ 取标准值 ${nearest} pF</div>
+          <div class="crystal-badge">候选标准值 ${nearest} pF</div>
         </div>
         <div class="buck-result-meta">
           C1 = C2 = 2 × (${fmtNum(cl)} − ${fmtNum(cstray)}) = <strong>${fmtNum(cEach)} pF</strong>
-          &nbsp;→&nbsp; 最接近标准值: <strong>${nearest} pF</strong>
+          &nbsp;→&nbsp; 最接近标准值: <strong>${nearest} pF</strong>（需按器件规格书确认）
         </div>
       </div>
 
@@ -197,7 +199,13 @@ registerTool('crystal-load', () => {
           <div class="unit">验证 CL（反算）</div>
           <div class="value">${fmtNum(clCheck)} pF</div>
         </div>
+        <div class="result-item highlight">
+          <div class="unit">采用 ${nearest} pF 后 CL</div>
+          <div class="value">${fmtNum(standardCl)} pF</div>
+          <div class="ohms-result-sub">偏差 ${fmtNum(standardError)}%</div>
+        </div>
       </div>
+      <div class="formula-box">Cstray 应包含芯片引脚、封装与 PCB 寄生的等效值；本结果是起始选型，最终请以 MCU 与晶振规格书及实测为准。</div>
     `;
   }
 

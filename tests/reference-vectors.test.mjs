@@ -49,6 +49,9 @@ test('unloaded voltage divider reference vector', () => {
   assert.equal(result.valid, true);
   closeTo(result.vout, 2.5);
   closeTo(result.current, 0.00025);
+  const loaded = calculateDivider({ vin: 5, r1: 10e3, r2: 10e3, load: 10e3 });
+  closeTo(loaded.lower, 5e3);
+  closeTo(loaded.vout, 5 / 3);
 });
 
 test('Buck reference vector uses Hz, not a scaled display unit', () => {

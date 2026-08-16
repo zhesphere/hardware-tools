@@ -190,6 +190,20 @@ registerTool('ohms-law', () => {
       return;
     }
 
+    // With three or four inputs, never silently ignore a contradictory value.
+    const nearlyEqual = (a, b) => Math.abs(a - b) <= Math.max(Math.abs(a), Math.abs(b), 1) * 1e-6;
+    const inconsistent = (V !== null && !nearlyEqual(V, rV)) ||
+      (I !== null && !nearlyEqual(I, rI)) ||
+      (R !== null && !nearlyEqual(R, rR)) ||
+      (P !== null && !nearlyEqual(P, rP));
+    if (inconsistent) {
+      resultDiv.innerHTML = `
+        <div class="result-box" style="border-color: var(--orange);">
+          <span style="color: var(--orange);">⚠️ 输入参数彼此不一致。请保留任意两个可信参数重新计算，或检查单位与测量条件。</span>
+        </div>`;
+      return;
+    }
+
     const given = {
       V: V !== null,
       I: I !== null,
@@ -221,7 +235,7 @@ registerTool('ohms-law', () => {
         </div>
       </div>
       <div class="formula-box">
-        计算方式：${formulaUsed}
+        计算方式：${formulaUsed}${filled > 2 ? '（其余输入已交叉验证）' : ''}
       </div>
     `;
   }

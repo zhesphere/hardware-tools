@@ -60,6 +60,17 @@ registerTool('voltage-divider', () => {
             </div>
           </div>
           <div class="vd-input-group">
+            <label class="form-label">负载 RL（可选）<span class="crystal-hint">留空表示无负载</span></label>
+            <div class="form-row">
+              <input type="number" class="form-input" id="vdLoad" step="any" placeholder="例：100">
+              <select class="form-select vd-unit-select" id="vdLoadUnit">
+                <option value="1">Ω</option>
+                <option value="1e3" selected>kΩ</option>
+                <option value="1e6">MΩ</option>
+              </select>
+            </div>
+          </div>
+          <div class="vd-input-group">
             <label class="form-label">电阻 R1</label>
             <div class="form-row">
               <input type="number" class="form-input" id="vdR1" value="10" step="any" placeholder="例：10">
@@ -99,30 +110,32 @@ registerTool('voltage-divider', () => {
   const r2Input = document.getElementById('vdR2');
   const r1Unit = document.getElementById('vdR1Unit');
   const r2Unit = document.getElementById('vdR2Unit');
+  const loadInput = document.getElementById('vdLoad');
+  const loadUnit = document.getElementById('vdLoadUnit');
   const resultDiv = document.getElementById('vdResult');
 
   function calculate() {
     const vin = parseFloat(vinInput.value);
     const r1_raw = parseFloat(r1Input.value);
     const r2_raw = parseFloat(r2Input.value);
-
-    if (isNaN(vin) || isNaN(r1_raw) || isNaN(r2_raw) || r1_raw <= 0 || r2_raw <= 0) {
-      resultDiv.innerHTML = '';
-      return;
-    }
+    const loadRaw = loadInput.value.trim() === '' ? undefined : parseFloat(loadInput.value);
 
     const R1 = r1_raw * parseFloat(r1Unit.value);
     const R2 = r2_raw * parseFloat(r2Unit.value);
-    const totalR = R1 + R2;
-    const Vout = vin * R2 / totalR;
-    const I = vin / totalR;
-    const ratio = R2 / totalR;
+    const load = loadRaw === undefined ? undefined : loadRaw * parseFloat(loadUnit.value);
+    const calculation = HardwareToolsCore.calculateDivider({ vin, r1: R1, r2: R2, load });
+    if (!calculation.valid) {
+      resultDiv.innerHTML = `<div class="result-box" style="border-color:var(--orange)"><span style="color:var(--orange)">⚠️ ${calculation.message}</span></div>`;
+      return;
+    }
+    const { total: totalR, vout: Vout, current: I, lower: effectiveR2 } = calculation;
+    const ratio = effectiveR2 / totalR;
     const ratioPercent = ratio * 100;
 
     // Power calculations
     const pTotal = vin * I;
     const pR1 = I * I * R1;
-    const pR2 = I * I * R2;
+    const pR2 = I * I * effectiveR2;
 
     resultDiv.innerHTML = `
       <div class="vd-result-primary">
@@ -141,7 +154,7 @@ registerTool('voltage-divider', () => {
           <div class="value">${fmtNum(I * 1000)} mA</div>
         </div>
         <div class="result-item">
-          <div class="unit">总电阻</div>
+          <div class="unit">等效总电阻</div>
           <div class="value">${fmtNum(totalR)} Ω</div>
         </div>
         <div class="result-item">
@@ -151,6 +164,7 @@ registerTool('voltage-divider', () => {
       </div>
 
       <!-- Ratio bar -->
+      ${load ? `<div class="formula-box">已计入负载：R2∥RL = ${fmtNum(effectiveR2)} Ω；未填写 RL 时结果为理想无负载模型。</div>` : '<div class="formula-box">当前为理想无负载模型；接入 ADC、反馈脚或外部电路时请填写 RL。</div>'}
       <div class="vd-ratio-bar-wrap">
         <div class="vd-ratio-labels">
           <span>R1 ${fmtNum(100 - ratioPercent)}%</span>
@@ -170,7 +184,9 @@ registerTool('voltage-divider', () => {
   vinInput.addEventListener('input', calculate);
   r1Input.addEventListener('input', calculate);
   r2Input.addEventListener('input', calculate);
+  loadInput.addEventListener('input', calculate);
   r1Unit.addEventListener('change', calculate);
   r2Unit.addEventListener('change', calculate);
+  loadUnit.addEventListener('change', calculate);
   calculate();
 });
