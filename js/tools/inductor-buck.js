@@ -141,9 +141,9 @@ registerTool('inductor-buck', () => {
               <div class="form-row">
                 <input type="number" class="form-input" id="buckFsw" value="770" step="any" placeholder="例：770">
                 <select class="form-select buck-unit-select" id="buckFswUnit">
-                  <option value="1e3">Hz</option>
-                  <option value="1e6" selected>KHz</option>
-                  <option value="1e9">MHz</option>
+                  <option value="1">Hz</option>
+                  <option value="1e3" selected>kHz</option>
+                  <option value="1e6">MHz</option>
                 </select>
               </div>
             </div>
@@ -232,14 +232,14 @@ registerTool('inductor-buck', () => {
     const kind = parseFloat(kindInput.value);
     const fswRaw = parseFloat(fswInput.value);
     const fswMul = parseFloat(fswUnit.value);
-    const derating = parseFloat(deratingInput.value) || 0.7;
+    const derating = parseFloat(deratingInput.value);
 
-    if (isNaN(vin) || isNaN(vout) || isNaN(io) || isNaN(kind) || isNaN(fswRaw) || vin <= 0 || vout <= 0 || io <= 0 || kind <= 0 || fswRaw <= 0) {
+    const fswHz = fswRaw * fswMul;
+    const core = HardwareToolsCore.calculateBuck({ vin, vout, io, rippleRatio: kind, fswHz, derating });
+    if (!core.valid) {
       return null;
     }
-
-    const fswHz = fswRaw * fswMul; // Convert to Hz
-    return { vin, vout, io, kind, fswRaw, fswMul, fswHz, derating };
+    return { vin, vout, io, kind, fswRaw, fswMul, fswHz, derating, ...core };
   }
 
   function buildLSelect(highlightL) {
@@ -284,7 +284,7 @@ registerTool('inductor-buck', () => {
   function calculate() {
     const p = getParams();
     if (!p) {
-      step1Div.innerHTML = '';
+      step1Div.innerHTML = '<div class="buck-warn">⚠️ 请确认 Vin > Vout > 0、频率/电流为正，纹波系数为 (0, 1]，降额系数为 (0, 1]。</div>';
       step2Div.innerHTML = '';
       lSelect.innerHTML = '';
       lCustom.placeholder = '自定义值';
@@ -294,10 +294,10 @@ registerTool('inductor-buck', () => {
     const { vin, vout, io, kind, fswHz, derating } = p;
 
     // Step 1 calculations
-    const lmin = (vin - vout) * vout * 1e6 / (vin * fswHz * kind * io); // uH
-    const iripple = kind * io; // A
-    const ipeak = io + iripple / 2; // A
-    const duty = (vout / vin) * 100; // Duty cycle %
+    const lmin = p.lminUh;
+    const iripple = p.ripple;
+    const ipeak = p.peak;
+    const duty = p.duty * 100;
 
     // Format values for display
     const lminDisplay = fmtNum(lmin);

@@ -34,6 +34,10 @@ function findClosestResistor(target) {
   return decades.slice(0, 5);
 }
 
+function findUpwardResistor(target) {
+  return findClosestResistor(target).filter(value => value >= target).sort((a, b) => a - b)[0] || null;
+}
+
 registerTool('led', () => {
   return `
     <div class="tool-panel active">
@@ -89,29 +93,20 @@ registerTool('led', () => {
     const vf = parseFloat(vfInput.value);
     const If_mA = parseFloat(ifInput.value);
 
-    if (isNaN(vs) || isNaN(vf) || isNaN(If_mA) || If_mA <= 0) {
+    const calculation = HardwareToolsCore.calculateLed({ vs, vf, currentMa: If_mA });
+    if (!calculation.valid) {
       resultDiv.innerHTML = `
         <div class="result-box" style="border-color: var(--text-muted);">
-          <span style="color: var(--text-muted);">请填写所有参数</span>
+          <span style="color: var(--text-muted);">${calculation.message}</span>
         </div>
       `;
       return;
     }
-
-    if (vf >= vs) {
-      resultDiv.innerHTML = `
-        <div class="result-box" style="border-color: var(--red);">
-          <span style="color: var(--red);">⚠️ LED正向压降 (${vf}V) 不能大于等于电源电压 (${vs}V)</span>
-        </div>
-      `;
-      return;
-    }
-
-    const If_A = If_mA / 1000;
-    const R = (vs - vf) / If_A;
-    const Pr = (vs - vf) * If_A; // Power dissipated by resistor
+    const { currentA: If_A, resistance: R, resistorPower: Pr } = calculation;
 
     const closest = findClosestResistor(R);
+    const recommended = findUpwardResistor(R);
+    const actualCurrent = recommended ? (vs - vf) / recommended : null;
 
     let html = `
       <div class="result-box">
@@ -120,6 +115,7 @@ registerTool('led', () => {
           所需电阻：${fmtNum(R)} Ω
         </div>
       </div>
+      ${recommended ? `<div class="formula-box" style="margin-top:12px; color: var(--green);">✅ 默认安全推荐：向上取 E12 ${fmtNum(recommended)} Ω（实际电流约 ${fmtNum(actualCurrent * 1000)} mA）</div>` : ''}
       <div class="result-grid">
         <div class="result-item highlight">
           <div class="unit">电阻值 R</div>
@@ -131,7 +127,7 @@ registerTool('led', () => {
         </div>
         <div class="result-item">
           <div class="unit">LED 功耗</div>
-          <div class="value">${fmtNum(vf * If_A * 1000)} mW</div>
+          <div class="value">${fmtNum(calculation.ledPower * 1000)} mW</div>
         </div>
         <div class="result-item">
           <div class="unit">总功耗</div>
